@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Asistencia</string>
+    <string name="text_accounts">Cuentas creadas</string>
+    <string name="hint_name">Nombre</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirmar Password</string>
+    <string name="text_login">Login</string>
+    <string name="text_register">Registrar</string>
+    <string name="error_message_name">Ingresar nombre completo</string>
+    <string name="error_message_email">Ingresa una direccion de correo electronico valido</string>
+    <string name="error_message_age">Ingrese edad</string>
+    <string name="error_message_password">Ingrese Password</string>
+    <string name="success_message">Registro exitoso</string>
+    <string name="text_not_member">Registrar</string>
+    <string name="text_already_member">Login</string>
+    <string name="error_email_exists">Correo electronico ya existe</string>
+    <string name="error_password_match">Contraseñas no coinciden</string>
+    <string name="error_valid_email_password">Contraseña o correo electronico incorrecto</string>
+    <string name="action_settings">Configuracion</string>
+    <string name="text_hello">Hola,</string>
+    <string name="text_title">Asistencia</string>
+</resources>
