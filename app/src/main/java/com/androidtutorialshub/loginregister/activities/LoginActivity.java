@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void login_usuario(String usuario, String contraseña){
-        String url = "http://192.168.1.16:5000/user_professor/list";
+        String url = "http://192.168.1.4:5000/user_professor/list";
         HashMap<String,String> parametros = new HashMap();
         parametros.put("usuario",usuario);
         parametros.put("contrasenia",contraseña);
