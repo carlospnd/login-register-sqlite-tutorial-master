@@ -1,5 +1,6 @@
 package com.androidtutorialshub.loginregister.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -9,12 +10,23 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.helpers.InputValidation;
 import com.androidtutorialshub.loginregister.model.User;
 import com.androidtutorialshub.loginregister.sql.DatabaseHelper;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * Created by lalit on 8/27/2016.
@@ -26,11 +38,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private NestedScrollView nestedScrollView;
 
     private TextInputLayout textInputLayoutName;
+    private TextInputLayout textInputLayoutUser;
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
     private TextInputLayout textInputLayoutConfirmPassword;
 
     private TextInputEditText textInputEditTextName;
+    private TextInputEditText textInputEditTextUser;
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
     private TextInputEditText textInputEditTextConfirmPassword;
@@ -60,11 +74,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
 
         textInputLayoutName = (TextInputLayout) findViewById(R.id.textInputLayoutName);
+        textInputLayoutUser = (TextInputLayout) findViewById(R.id.textInputLayoutUser);
         textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
         textInputLayoutConfirmPassword = (TextInputLayout) findViewById(R.id.textInputLayoutConfirmPassword);
 
         textInputEditTextName = (TextInputEditText) findViewById(R.id.textInputEditTextName);
+        textInputEditTextUser = (TextInputEditText) findViewById(R.id.textInputEditTextUser);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
         textInputEditTextConfirmPassword = (TextInputEditText) findViewById(R.id.textInputEditTextConfirmPassword);
@@ -105,7 +121,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
 
             case R.id.appCompatButtonRegister:
-                postDataToSQLite();
+                verifica_usuario();
                 break;
 
             case R.id.appCompatTextViewLoginLink:
@@ -113,6 +129,84 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
         }
     }
+
+    public void verifica_usuario(){
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextName, textInputLayoutName, getString(R.string.error_message_name))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
+            return;
+        }
+        if (!inputValidation.isInputEditTextMatches(textInputEditTextPassword, textInputEditTextConfirmPassword,
+                textInputLayoutConfirmPassword, getString(R.string.error_password_match))) {
+            return;
+        }
+
+        crear_usuario(textInputEditTextUser.getText().toString(), textInputEditTextPassword.getText().toString(),textInputEditTextName.getText().toString(),textInputEditTextEmail.getText().toString());
+    }
+
+
+    public void crear_usuario(String usuario, String contraseña,String nombre, String correo){
+        String url = Volley_Singleton.getUrl_connect()+"user_professor/new";
+        HashMap<String,String> parametros = new HashMap();
+        parametros.put("usuario",usuario);
+        parametros.put("contrasenia",contraseña);
+        parametros.put("nombre",nombre);
+        parametros.put("email",correo);
+
+        JsonObjectRequest stringRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                new JSONObject(parametros),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejo de la respuesta
+                        leer_objeto_json(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejo de errores
+                        Log.i("Error:",error.toString());
+                    }
+                });
+        Volley_Singleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+    }
+
+    public void leer_objeto_json(JSONObject response){
+        try{
+            String respuesta = response.getString("mensaje");
+            Toast toast = Toast.makeText(this, respuesta, Toast.LENGTH_SHORT);
+            toast.show();
+            if(respuesta.equals("usuario creado con exito") == true){
+                Intent accountsIntent = new Intent(activity, UsersListActivity.class);
+                startActivity(accountsIntent);
+            }else {
+                textInputEditTextName.setText("");
+                textInputEditTextUser.setText("");
+                textInputEditTextEmail.setText("");
+                textInputEditTextPassword.setText("");
+                textInputEditTextConfirmPassword.setText("");
+            }
+            //Intent regresar = new Intent(LoginActivity.this,LoginActivity.class);
+            //startActivity(regresar);
+        }catch(Exception e){
+            Toast toast = Toast.makeText(this,e.getMessage(), Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+    /***********************************************************************************************
+     **************** CODIGO UTIILZADO PARA SQL LITE POR EL MOMENTO NO SE TRABAJARA EN EL***********
+     **********************************************************************************************/
 
     /**
      * This method is to validate the input text fields and post data to SQLite

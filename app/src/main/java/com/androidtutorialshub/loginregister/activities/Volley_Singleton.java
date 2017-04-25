@@ -15,6 +15,8 @@ public final class Volley_Singleton {
     private static RequestQueue request;
     private static Context context;
 
+    private static final String url_connect = "http://192.168.1.4:5000/";;
+
     private Volley_Singleton(Context contexto){
         Volley_Singleton.context = contexto;
         request = getRequestQueue();
@@ -32,6 +34,10 @@ public final class Volley_Singleton {
             request = Volley.newRequestQueue(context.getApplicationContext());
         }
         return request;
+    }
+
+    public static String getUrl_connect(){
+        return url_connect;
     }
 
     public  void addToRequestQueue(Request req) {
