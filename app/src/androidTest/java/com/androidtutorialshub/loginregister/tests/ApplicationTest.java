@@ -1,4 +1,4 @@
-package com.androidtutorialshub.loginregister;
+package com.androidtutorialshub.loginregister.tests;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -9,5 +9,12 @@ import android.test.ApplicationTestCase;
 public class ApplicationTest extends ApplicationTestCase<Application> {
     public ApplicationTest() {
         super(Application.class);
+    }
+
+    public void test_esto_siempre_pasa(){
+        assertEquals("Hello World","Hello World");
+    }
+    public void test_esto_nunca_pasa(){
+        assertEquals("Hello World","Hola Mundo");
     }
 }

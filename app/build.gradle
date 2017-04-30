@@ -10,6 +10,12 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testApplicationId "com.androidtutorialshub.loginregister.tests"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+    }
+    testOptions{
+        reportDir="$project.buildDir/results/report"
+        resultsDir="$project.buildDir/results"
     }
     buildTypes {
         release {
