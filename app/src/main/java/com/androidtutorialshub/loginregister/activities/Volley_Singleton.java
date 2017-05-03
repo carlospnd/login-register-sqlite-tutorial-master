@@ -15,7 +15,7 @@ public final class Volley_Singleton {
     private static RequestQueue request;
     private static Context context;
 
-    private static final String url_connect = "http://172.20.10.4:5000/";;
+    public static final String url_connect = "http://172.20.10.4:5000/";;
 
     private Volley_Singleton(Context contexto){
         Volley_Singleton.context = contexto;
