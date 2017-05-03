@@ -13,45 +13,37 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.androidtutorialshub.loginregister.R;
 import com.androidtutorialshub.loginregister.helpers.InputValidation;
 import com.androidtutorialshub.loginregister.sql.DatabaseHelper;
 
-/**********************************ADD TO CRISTIAN AZURDIA*****************************************/
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+/**********************************ADD TO CRISTIAN AZURDIA*****************************************/
+
 /**************************************************************************************************/
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private final AppCompatActivity activity = LoginActivity.this;
+public class LoginSuccessActivity extends AppCompatActivity implements View.OnClickListener {
+    private final AppCompatActivity activity = LoginSuccessActivity.this;
 
     private NestedScrollView nestedScrollView;
 
-    private TextInputLayout textInputLayoutEmail;
-    private TextInputLayout textInputLayoutPassword;
 
-    private TextInputEditText textInputEditTextEmail;
-    private TextInputEditText textInputEditTextPassword;
 
     private AppCompatButton appCompatButtonLogin;
 
-    private AppCompatTextView textViewLinkRegister;
-
-    private InputValidation inputValidation;
+   private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_success);
         getSupportActionBar().hide();
 
         initViews();
@@ -66,15 +58,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
 
-        textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
-        textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
-
-        textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
-        textInputEditTextPassword = (TextInputEditText) findViewById(R.id.textInputEditTextPassword);
-
         appCompatButtonLogin = (AppCompatButton) findViewById(R.id.appCompatButtonLogin);
 
-        textViewLinkRegister = (AppCompatTextView) findViewById(R.id.textViewLinkRegister);
 
     }
 
@@ -83,7 +68,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     private void initListeners() {
         appCompatButtonLogin.setOnClickListener(this);
-        textViewLinkRegister.setOnClickListener(this);
     }
 
     /**
@@ -105,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.appCompatButtonLogin:
                 //verifyFromSQLite();
-                login_usuario(textInputEditTextEmail.getText().toString(),textInputEditTextPassword.getText().toString());
+                //login_usuario(textInputEditTextEmail.getText().toString(),textInputEditTextPassword.getText().toString());
                 break;
             case R.id.textViewLinkRegister:
                 // Navigate to RegisterActivity
@@ -149,12 +133,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toast toast = Toast.makeText(this, respuesta, Toast.LENGTH_SHORT);
             toast.show();
             if(respuesta.equals("usuario existente") == true){
-                //Intent accountsIntent = new Intent(activity, UsersListActivity.class);
-                Intent accountsIntent = new Intent(activity, LoginSuccessActivity.class);
+                Intent accountsIntent = new Intent(activity, UsersListActivity.class);
                 startActivity(accountsIntent);
             }else {
-                textInputEditTextEmail.setText("");
-                textInputEditTextPassword.setText("");
+                //textInputEditTextEmail.setText("");
+                //textInputEditTextPassword.setText("");
             }
             //Intent regresar = new Intent(LoginActivity.this,LoginActivity.class);
             //startActivity(regresar);
@@ -171,38 +154,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * This method is to validate the input text fields and verify login credentials from SQLite
      */
-    private void verifyFromSQLite() {
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return;
-        }
-        if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return;
-        }
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_email))) {
-            return;
-        }
-
-        if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
-                , textInputEditTextPassword.getText().toString().trim())) {
-
-
-            Intent accountsIntent = new Intent(activity, UsersListActivity.class);
-            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-            emptyInputEditText();
-            startActivity(accountsIntent);
-
-
-        } else {
-            // Snack Bar to show success message that record is wrong
-            Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
-        }
-    }
 
     /**
      * This method is to empty all input edit text
      */
-    private void emptyInputEditText() {
-        textInputEditTextEmail.setText(null);
-        textInputEditTextPassword.setText(null);
-    }
+
 }
