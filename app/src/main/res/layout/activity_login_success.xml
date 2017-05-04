@@ -24,5 +24,20 @@
             android:background="@color/colorTextHint"
             android:text="@string/text_login" />
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appCompatButtonCursos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorTextHint"
+            android:text="CURSOS" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/appCompatButtonAcercaDe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorTextHint"
+            android:text="ACERCA DE" />
     </android.support.v7.widget.LinearLayoutCompat>
 </android.support.v4.widget.NestedScrollView>
